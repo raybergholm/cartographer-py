@@ -2,12 +2,9 @@
 
 class ApiNode:
     def __init__(self, node_name, config):
-        if not "queryUrl" in config or not "nodeUrl" in config:
-            raise Exception("Failed to instantiate %s, missing queryUrl or nodeUrl" % node_name)
-
         self.prefix = config["prefix"] if "prefix" in config else "/"
-        self.query_url = config["queryUrl"]
-        self.node_url = config["nodeUrl"]
+        self.query_url = config["queryUrl"] if "queryUrl" in config else ""
+        self.node_url = config["nodeUrl"] if "nodeUrl" in config else ""
 
     def query(self):
         return "%s%s" % (self.prefix, self.query_url)
