@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 
 import cartographer
-from lazee.json_handler import from_json_file
 
 import argparse
 
 def main():
     args = parse_arguments()
 
-    cartographer_instance = cartographer.Cartographer(args.config_filepath)
+    with open(args.config_filepath) as file_stream:
+        config_data = file_stream.read()
+
+    cartographer_instance = cartographer.Cartographer(config_data)
 
     print(str(cartographer_instance))
 
