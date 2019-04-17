@@ -10,7 +10,8 @@ class ApiNode:
         return "%s%s" % (self.prefix, self.query_url)
 
     def by_id(self, id):
-        return "%s%s" % (self.prefix, self.query_url)
+        parameterized_path = self.node_url.replace(":id", id)
+        return "%s%s" % (self.prefix, parameterized_path)
 
     def __str__(self):
         return "*ApiNode*:\nqueryUrl: %s\nnodeUrl: %s" % (self.query_url, self.node_url)
