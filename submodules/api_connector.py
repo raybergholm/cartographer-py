@@ -16,14 +16,14 @@ class ApiConnector:
 
         if username != None and password != None:
             credentials = "%s:%s" % (username, password)
-            basic_auth_token = b64encode(
+            basic_auth_token = "Basic %s" % b64encode(
                 credentials.encode("ascii")).decode("ascii")
-            self.common_headers["Authorization"]: "Basic %s" % basic_auth_token
+            self.common_headers["Authorization"] = basic_auth_token
 
     def open_connection(self):
         self.connection = HTTPSConnection(self.host_url)
         return self
-    
+
     def close_connection(self):
         self.connection = None
         return self
@@ -38,13 +38,12 @@ class ApiConnector:
         if path != None:
             request_url += "/%s" % path
 
-        print("request URL: %s" % request_url)
-
         headers = self.merge_headers(
             params["headers"]) if "headers" in params else self.common_headers
         body = json.dumps(params["body"]) if "body" in params else None
 
-        self.connection.request(method, request_url, headers=headers, body=body)
+        self.connection.request(method, request_url,
+                                headers=headers, body=body)
         response = self.connection.getresponse()
         self.close_connection()
         return self.handle_response(response.status, response.read())
