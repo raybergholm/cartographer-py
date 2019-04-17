@@ -8,6 +8,7 @@ from base64 import b64encode
 
 class ApiConnector:
     def __init__(self, protocol, host_url, username=None, password=None, headers=None):
+        self.connection = None
         self.protocol = protocol
         self.host_url = host_url
 
@@ -22,16 +23,22 @@ class ApiConnector:
     def open_connection(self):
         self.connection = HTTPSConnection(self.host_url)
         return self
+    
+    def close_connection(self):
+        self.connection = None
+        return self
 
     def merge_headers(self, extra):
         return {**self.common_headers, **extra}
 
     def request(self, method, path=None, params={}):
-        # self.open_connection()
+        self.open_connection()
         request_url = "%s://%s" % (self.protocol, self.host_url)
 
         if path != None:
             request_url += "/%s" % path
+
+        print("request URL: %s" % request_url)
 
         headers = self.merge_headers(
             params["headers"]) if "headers" in params else self.common_headers
@@ -39,7 +46,7 @@ class ApiConnector:
 
         self.connection.request(method, request_url, headers=headers, body=body)
         response = self.connection.getresponse()
-        # self.close_connection()
+        self.close_connection()
         return self.handle_response(response.status, response.read())
 
     def handle_response(self, status, body):
