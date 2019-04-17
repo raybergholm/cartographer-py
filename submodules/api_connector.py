@@ -31,7 +31,7 @@ class ApiConnector:
         request_url = "%s://%s" % (self.protocol, self.host_url)
 
         if path != None:
-            request_url += "/%s" % params["path"]
+            request_url += "/%s" % path
 
         headers = self.merge_headers(
             params["headers"]) if "headers" in params else self.common_headers
