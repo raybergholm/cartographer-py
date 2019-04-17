@@ -33,9 +33,6 @@ class ApiConnector:
         if path != None:
             request_url += "/%s" % params["path"]
 
-        if "query" in params:
-            request_url += "?%s" % params["query"]
-
         headers = self.merge_headers(
             params["headers"]) if "headers" in params else self.common_headers
         body = json.dumps(params["body"]) if "body" in params else None

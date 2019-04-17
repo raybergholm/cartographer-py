@@ -4,6 +4,11 @@ from submodules.api_connector import ApiConnector
 from submodules.api_node import ApiNode
 
 
+def add_query_params(base, params):
+    key_value_pairs = ["%s=%s" % (key, value) for key, value in params.items()]
+    query_string = "&".join(key_value_pairs)
+    return "%s?%s" % (base, query_string)
+
 class Cartographer:
     def __init__(self, config):
         (connector, nodes) = self.parse_configs(config)
@@ -39,6 +44,8 @@ class Cartographer:
         else:
             path_url = self.nodes.query(
                 node_name) if node_id == None else self.nodes.by_id(node_name, node_id)
+            if "query" in params:
+                path_url = add_query_params(path_url, params["query"])
             return self.connector.request("OPTIONS", path_url, params)
 
     def head(self, node_name, node_id=None, params={}):
@@ -49,6 +56,8 @@ class Cartographer:
         else:
             path_url = self.nodes.query(
                 node_name) if node_id == None else self.nodes.by_id(node_name, node_id)
+            if "query" in params:
+                path_url = add_query_params(path_url, params["query"])
             return self.connector.request("HEAD", path_url, params)
 
     def get(self, node_name, node_id=None, params={}):
@@ -59,6 +68,8 @@ class Cartographer:
         else:
             path_url = self.nodes.query(
                 node_name) if node_id == None else self.nodes.by_id(node_name, node_id)
+            if "query" in params:
+                path_url = add_query_params(path_url, params["query"])
             return self.connector.request("GET", path_url, params)
 
     def post(self, node_name, node_id=None, params={}):
@@ -69,6 +80,8 @@ class Cartographer:
         else:
             path_url = self.nodes.query(
                 node_name) if node_id == None else self.nodes.by_id(node_name, node_id)
+            if "query" in params:
+                path_url = add_query_params(path_url, params["query"])
             return self.connector.request("POST", path_url, params)
 
     def put(self, node_name, node_id=None, params={}):
@@ -79,6 +92,8 @@ class Cartographer:
         else:
             path_url = self.nodes.query(
                 node_name) if node_id == None else self.nodes.by_id(node_name, node_id)
+            if "query" in params:
+                path_url = add_query_params(path_url, params["query"])
             return self.connector.request("PUT", path_url, params)
 
     def patch(self, node_name, node_id=None, params={}):
@@ -89,6 +104,8 @@ class Cartographer:
         else:
             path_url = self.nodes.query(
                 node_name) if node_id == None else self.nodes.by_id(node_name, node_id)
+            if "query" in params:
+                path_url = add_query_params(path_url, params["query"])
             return self.connector.request("PATCH", path_url, params)
 
     def delete(self, node_name, node_id=None, params={}):
@@ -99,6 +116,8 @@ class Cartographer:
         else:
             path_url = self.nodes.query(
                 node_name) if node_id == None else self.nodes.by_id(node_name, node_id)
+            if "query" in params:
+                path_url = add_query_params(path_url, params["query"])
             return self.connector.request("DELETE", path_url, params)
 
     def __str__(self):
