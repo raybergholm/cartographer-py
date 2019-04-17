@@ -36,90 +36,39 @@ class Cartographer:
         # TODO: parse the rest of the stuff in the config
 
         return (connector, nodes)
+    
+    def call(self, method, node_name, node_id=None, params={}):
+        if self.connector == None:
+            raise UndefinedConnectorContextError("Connector has not been set")
+        elif self.nodes == None:
+            raise UndefinedNodeMapError("Nodemap has not been set")
+        else:
+            path_url = self.nodes.query(
+                node_name) if node_id == None else self.nodes.by_id(node_name, node_id)
+            if "query" in params:
+                path_url = add_query_params(path_url, params["query"])
+            return self.connector.request(method, path_url, params)
 
     def options(self, node_name, node_id=None, params={}):
-        if self.connector == None:
-            raise UndefinedConnectorContextError("Connector has not been set")
-        elif self.nodes == None:
-            raise UndefinedNodeMapError("Nodemap has not been set")
-        else:
-            path_url = self.nodes.query(
-                node_name) if node_id == None else self.nodes.by_id(node_name, node_id)
-            if "query" in params:
-                path_url = add_query_params(path_url, params["query"])
-            return self.connector.request("OPTIONS", path_url, params)
+        return self.call("OPTIONS", node_name, node_id, params)
 
     def head(self, node_name, node_id=None, params={}):
-        if self.connector == None:
-            raise UndefinedConnectorContextError("Connector has not been set")
-        elif self.nodes == None:
-            raise UndefinedNodeMapError("Nodemap has not been set")
-        else:
-            path_url = self.nodes.query(
-                node_name) if node_id == None else self.nodes.by_id(node_name, node_id)
-            if "query" in params:
-                path_url = add_query_params(path_url, params["query"])
-            return self.connector.request("HEAD", path_url, params)
+        return self.call("HEAD", node_name, node_id, params)
 
     def get(self, node_name, node_id=None, params={}):
-        if self.connector == None:
-            raise UndefinedConnectorContextError("Connector has not been set")
-        elif self.nodes == None:
-            raise UndefinedNodeMapError("Nodemap has not been set")
-        else:
-            path_url = self.nodes.query(
-                node_name) if node_id == None else self.nodes.by_id(node_name, node_id)
-            if "query" in params:
-                path_url = add_query_params(path_url, params["query"])
-            return self.connector.request("GET", path_url, params)
+        return self.call("GET", node_name, node_id, params)
 
     def post(self, node_name, node_id=None, params={}):
-        if self.connector == None:
-            raise UndefinedConnectorContextError("Connector has not been set")
-        elif self.nodes == None:
-            raise UndefinedNodeMapError("Nodemap has not been set")
-        else:
-            path_url = self.nodes.query(
-                node_name) if node_id == None else self.nodes.by_id(node_name, node_id)
-            if "query" in params:
-                path_url = add_query_params(path_url, params["query"])
-            return self.connector.request("POST", path_url, params)
+        return self.call("POST", node_name, node_id, params)
 
     def put(self, node_name, node_id=None, params={}):
-        if self.connector == None:
-            raise UndefinedConnectorContextError("Connector has not been set")
-        elif self.nodes == None:
-            raise UndefinedNodeMapError("Nodemap has not been set")
-        else:
-            path_url = self.nodes.query(
-                node_name) if node_id == None else self.nodes.by_id(node_name, node_id)
-            if "query" in params:
-                path_url = add_query_params(path_url, params["query"])
-            return self.connector.request("PUT", path_url, params)
+        return self.call("PUT", node_name, node_id, params)
 
     def patch(self, node_name, node_id=None, params={}):
-        if self.connector == None:
-            raise UndefinedConnectorContextError("Connector has not been set")
-        elif self.nodes == None:
-            raise UndefinedNodeMapError("Nodemap has not been set")
-        else:
-            path_url = self.nodes.query(
-                node_name) if node_id == None else self.nodes.by_id(node_name, node_id)
-            if "query" in params:
-                path_url = add_query_params(path_url, params["query"])
-            return self.connector.request("PATCH", path_url, params)
+        return self.call("PATCH", node_name, node_id, params)
 
     def delete(self, node_name, node_id=None, params={}):
-        if self.connector == None:
-            raise UndefinedConnectorContextError("Connector has not been set")
-        elif self.nodes == None:
-            raise UndefinedNodeMapError("Nodemap has not been set")
-        else:
-            path_url = self.nodes.query(
-                node_name) if node_id == None else self.nodes.by_id(node_name, node_id)
-            if "query" in params:
-                path_url = add_query_params(path_url, params["query"])
-            return self.connector.request("DELETE", path_url, params)
+        return self.call("DELETE", node_name, node_id, params)
 
     def __str__(self):
         return "Cartographer instance details:\n" + str(self.connector) + "\nNodes: " + str([str(node) for node in self.nodes])
