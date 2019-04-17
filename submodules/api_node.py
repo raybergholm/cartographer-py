@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 class ApiNode:
-    def __init__(self, node_name, config):
+    def __init__(self, name, config):
+        self.name = name
         self.prefix = config["prefix"] if "prefix" in config else "/"
         self.query_url = config["queryUrl"] if "queryUrl" in config else ""
         self.node_url = config["nodeUrl"] if "nodeUrl" in config else ""

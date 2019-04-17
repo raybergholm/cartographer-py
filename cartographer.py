@@ -9,6 +9,7 @@ def add_query_params(base, params):
     query_string = "&".join(key_value_pairs)
     return "%s?%s" % (base, query_string)
 
+
 class Cartographer:
     def __init__(self, config):
         (connector, nodes) = self.parse_configs(config)
@@ -29,8 +30,8 @@ class Cartographer:
         connector = ApiConnector(connection["protocol"], connection["hostUrl"], connection["username"] if "username" in connection else None,
                                  connection["password"] if "password" in connection else None, connection["headers"] if "headers" in connection else None)
 
-        nodes = [ApiNode(name, entry)
-                 for name, entry in config["nodes"].items()]
+        nodes = {name: ApiNode(name, entry)
+                 for name, entry in config["nodes"].items()}
 
         # TODO: parse the rest of the stuff in the config
 
