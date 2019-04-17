@@ -36,15 +36,19 @@ class Cartographer:
         # TODO: parse the rest of the stuff in the config
 
         return (connector, nodes)
-    
+
     def call(self, method, node_name, node_id=None, params={}):
         if self.connector == None:
             raise UndefinedConnectorContextError("Connector has not been set")
         elif self.nodes == None:
             raise UndefinedNodeMapError("Nodemap has not been set")
         else:
-            path_url = self.nodes.query(
-                node_name) if node_id == None else self.nodes.by_id(node_name, node_id)
+            if not node_name in self.nodes:
+                raise InvalidNodeError(
+                    "Invalid node: '%s' not found" % node_name)
+
+            node = self.nodes[node_name]
+            path_url = node.query() if node_id == None else node.by_id(node_id)
             if "query" in params:
                 path_url = add_query_params(path_url, params["query"])
             return self.connector.request(method, path_url, params)
@@ -79,4 +83,8 @@ class UndefinedConnectorContextError(Exception):
 
 
 class UndefinedNodeMapError(Exception):
+    pass
+
+
+class InvalidNodeError(Exception):
     pass
