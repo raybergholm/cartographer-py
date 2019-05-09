@@ -9,7 +9,6 @@
             "authentication": "YOU_CAN_ALSO_INCLUDE_THE_AUTH_HEADER_DIRECTLY_INSTEAD_OF_SUPPLYING_A_USERNAME_AND_PASSWORD"
         }
     },
-    "restPrefix": "THIS_WILL_BE_PREFIXED_BEFORE_ALL_NODE_ADDRESSES",
     "nodes": {
         "users": {
             "queryUrl": "users",
