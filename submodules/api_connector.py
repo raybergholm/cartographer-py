@@ -25,6 +25,7 @@ class ApiConnector:
         return self
 
     def close_connection(self):
+        self.connection.close()
         self.connection = None
         return self
 
@@ -45,8 +46,10 @@ class ApiConnector:
         self.connection.request(method, request_url,
                                 headers=headers, body=body)
         response = self.connection.getresponse()
+
+        formatted_response = self.handle_response(response.status, response.read())
         self.close_connection()
-        return self.handle_response(response.status, response.read())
+        return formatted_response
 
     def handle_response(self, status, body):
         if status in [200, 204]:
