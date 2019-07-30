@@ -3,8 +3,8 @@
 class ApiNode:
     def __init__(self, name, config):
         self.name = name
-        self.query_url = config["queryUrl"] if "queryUrl" in config else ""
-        self.node_url = config["nodeUrl"] if "nodeUrl" in config else ""
+        self.query_url = config["queryUrl"] if "queryUrl" in config else None
+        self.node_url = config["nodeUrl"] if "nodeUrl" in config else None
 
     def query(self):
         return self.query_url
