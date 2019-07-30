@@ -1,0 +1,9 @@
+{
+    "connection": {
+        "protocol": "https",
+        "hostUrl": "www.example-api-hosturl.com",
+        "headers": {
+            "optionalHeaderKey": "Define any headers here which should be included with every request"
+        }
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "query": {
+        "paging": {
+            "pageSize": "perpage",
+            "pageNumber": "page"
+        },
+        "flags": {
+            "scope": {
+                "key": "scope",
+                "value": "full"
+            },
+            "metadata": {
+                "key": "metadata",
+                "value": "true"
+            }
+        }
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "connection": {
+        "protocol": "https",
+        "hostUrl": "www.example-api-hosturl.com",
+        "headers": {
+            "optionalHeaderKey": "Define any headers here which should be included with every request"
+        },
+        "auth": {
+            "type": "apikey",
+            "headerKey": "Your header key here",
+            "value": "Your API Key value here"
+        }
+    }
+}

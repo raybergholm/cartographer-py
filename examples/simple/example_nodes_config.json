@@ -1,14 +1,4 @@
 {
-    "connection": {
-        "protocol": "https",
-        "hostUrl": "www.example-api-hosturl.com",
-        "username": "YOUR_USERNAME_HERE",
-        "password": "YOUR_PASSWORD_HERE",
-        "authenticationHeaders": {
-            "x-api-key": "YOUR_OPTIONAL_API_KEY_GOES_HERE",
-            "authentication": "YOU_CAN_ALSO_INCLUDE_THE_AUTH_HEADER_DIRECTLY_INSTEAD_OF_SUPPLYING_A_USERNAME_AND_PASSWORD"
-        }
-    },
     "nodes": {
         "users": {
             "queryUrl": "users",
@@ -57,29 +47,5 @@
                 "DELETE"
             ]
         }
-    },
-    "query": {
-        "paging": {
-            "pageSize": "perpage",
-            "pageNumber": "page"
-        },
-        "flags": {
-            "scope": {
-                "key": "scope",
-                "value": "full"
-            },
-            "metadata": {
-                "key": "metadata",
-                "value": "true"
-            }
-        }
-    },
-    "genericFields": [
-        "id",
-        "createdOn",
-        "createdBy",
-        "modifiedOn",
-        "modifiedBy",
-        ""
-    ]
+    }
 }
