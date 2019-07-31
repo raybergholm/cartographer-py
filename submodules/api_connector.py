@@ -2,14 +2,14 @@
 
 import json
 
-from http.client import HTTPSConnection
+from http.client import HTTPSConnection, HTTPConnection
 from base64 import b64encode
 
 
 class ApiConnector:
     def __init__(self, protocol, host_url, username=None, password=None, headers=None):
         self.connection = None
-        self.protocol = protocol
+        self.protocol = protocol.lower()
         self.host_url = host_url
 
         self.common_headers = {**headers} if headers != None else {}
@@ -21,7 +21,7 @@ class ApiConnector:
             self.common_headers["Authorization"] = basic_auth_token
 
     def open_connection(self):
-        self.connection = HTTPSConnection(self.host_url)
+        self.connection = HTTPSConnection(self.host_url) if self.protocol == "https" else HTTPConnection(self.host_url) 
         return self
 
     def close_connection(self):
