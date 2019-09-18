@@ -21,7 +21,8 @@ class ApiConnector:
             self.common_headers["Authorization"] = basic_auth_token
 
     def open_connection(self):
-        self.connection = HTTPSConnection(self.host_url) if self.protocol == "https" else HTTPConnection(self.host_url) 
+        self.connection = HTTPSConnection(
+            self.host_url) if self.protocol == "https" else HTTPConnection(self.host_url)
         return self
 
     def close_connection(self):
@@ -32,7 +33,7 @@ class ApiConnector:
     def merge_headers(self, extra):
         return {**self.common_headers, **extra}
 
-    def request(self, method, path=None, params={}):
+    def request(self, method, path=None, params={}, debug=False):
         self.open_connection()
         request_url = "%s://%s" % (self.protocol, self.host_url)
 
@@ -43,12 +44,25 @@ class ApiConnector:
             params["headers"]) if "headers" in params else self.common_headers
         body = json.dumps(params["body"]) if "body" in params else None
 
+        if debug:
+            message = "About to send %s request to %s" % (method, request_url)
+            if headers:
+                message += "\n--- with headers: %s" % str(headers)
+            if body:
+                message += "\n--- with body: %s" % str(body)
+            print(message)
+
         self.connection.request(method, request_url,
                                 headers=headers, body=body)
         response = self.connection.getresponse()
 
-        formatted_response = self.handle_response(response.status, response.read())
+        formatted_response = self.handle_response(
+            response.status, response.read())
         self.close_connection()
+
+        if debug:
+            print("Received %s response from %s: %s" & (
+                method, request_url, formatted_response))
         return formatted_response
 
     def handle_response(self, status, body):

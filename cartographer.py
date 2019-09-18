@@ -37,7 +37,7 @@ class Cartographer:
 
         return (connector, nodes)
 
-    def call(self, method, node_name, node_id=None, params={}):
+    def call(self, method, node_name, node_id=None, params={}, debug=False):
         if self.connector == None:
             raise UndefinedConnectorContextError("Connector has not been set")
         elif self.nodes == None:
@@ -56,28 +56,28 @@ class Cartographer:
 
             if "query" in params:
                 path_url = add_query_params(path_url, params["query"])
-            return self.connector.request(method, path_url, params)
+            return self.connector.request(method, path_url, params, debug)
 
-    def options(self, node_name, node_id=None, params={}):
-        return self.call("OPTIONS", node_name, node_id, params)
+    def options(self, node_name, node_id=None, params={}, debug=False):
+        return self.call("OPTIONS", node_name, node_id, params, debug)
 
-    def head(self, node_name, node_id=None, params={}):
-        return self.call("HEAD", node_name, node_id, params)
+    def head(self, node_name, node_id=None, params={}, debug=False):
+        return self.call("HEAD", node_name, node_id, params, debug)
 
-    def get(self, node_name, node_id=None, params={}):
-        return self.call("GET", node_name, node_id, params)
+    def get(self, node_name, node_id=None, params={}, debug=False):
+        return self.call("GET", node_name, node_id, params, debug)
 
-    def post(self, node_name, node_id=None, params={}):
-        return self.call("POST", node_name, node_id, params)
+    def post(self, node_name, node_id=None, params={}, debug=False):
+        return self.call("POST", node_name, node_id, params, debug)
 
-    def put(self, node_name, node_id=None, params={}):
-        return self.call("PUT", node_name, node_id, params)
+    def put(self, node_name, node_id=None, params={}, debug=False):
+        return self.call("PUT", node_name, node_id, params, debug)
 
-    def patch(self, node_name, node_id=None, params={}):
-        return self.call("PATCH", node_name, node_id, params)
+    def patch(self, node_name, node_id=None, params={}, debug=False):
+        return self.call("PATCH", node_name, node_id, params, debug)
 
-    def delete(self, node_name, node_id=None, params={}):
-        return self.call("DELETE", node_name, node_id, params)
+    def delete(self, node_name, node_id=None, params={}, debug=False):
+        return self.call("DELETE", node_name, node_id, params, debug)
 
     def __str__(self):
         return "Cartographer instance details:\n" + str(self.connector) + "\nNodes: " + str([str(node) for node in self.nodes])
