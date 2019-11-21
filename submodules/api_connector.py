@@ -3,7 +3,6 @@
 import json
 
 from http.client import HTTPSConnection, HTTPConnection
-from urllib.parse import quote
 from base64 import b64encode
 
 
@@ -44,8 +43,6 @@ class ApiConnector:
         headers = self.merge_headers(
             params["headers"]) if "headers" in params else self.common_headers
         body = json.dumps(params["body"]) if "body" in params else None
-
-        request_url = quote(request_url)
 
         if debug:
             message = "About to send %s request to %s" % (method, request_url)

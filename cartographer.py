@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 
+from urllib.parse import quote
+
 from submodules.api_connector import ApiConnector
 from submodules.api_node import ApiNode
 
 
 def add_query_params(base, params):
-    key_value_pairs = ["%s=%s" % (key, value) for key, value in params.items()]
+    key_value_pairs = ["%s=%s" % (key, quote(value))
+                       for key, value in params.items()]
     query_string = "&".join(key_value_pairs)
     return "%s?%s" % (base, query_string)
 
