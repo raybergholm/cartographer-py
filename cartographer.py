@@ -2,8 +2,8 @@
 
 from urllib.parse import quote
 
-from submodules.api_connector import ApiConnector
-from submodules.api_node import ApiNode
+from .submodules.api_connector import ApiConnector
+from .submodules.api_node import ApiNode
 
 
 def add_query_params(base, params):
@@ -18,6 +18,8 @@ class Cartographer:
         (connector, nodes) = self.parse_configs(config)
         self.connector = connector
         self.nodes = nodes
+
+        self.node_names = [self.nodes.keys()]
 
     def parse_configs(self, raw_config):
         import json
@@ -55,7 +57,7 @@ class Cartographer:
 
             if not path_url:
                 raise UndefinedPathError(
-                    "Failed to get a valid path for node '%s' (check if the %s was configured correctly)" % (node_name, "nodeUrl" if node_id == None else "queryUrl"))
+                    "Failed to get a valid path for node '%s' (check if the %s was configured correctly).\n List of configured nodes: %s" % (node_name, "nodeUrl" if node_id == None else "queryUrl", str(self.node_names)))
 
             if "query" in params:
                 path_url = add_query_params(path_url, params["query"])
