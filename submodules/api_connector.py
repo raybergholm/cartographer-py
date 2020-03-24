@@ -15,6 +15,10 @@ class ApiConnector:
         self.common_headers = {**headers} if headers != None else {}
 
         if username != None and password != None:
+            self.set_basic_authentication(username, password)
+
+    def set_basic_authentication(self, username, password):
+        if username != None and password != None:
             credentials = "{0}:{1}".format(username, password)
             basic_auth_token = "Basic {0}".format(b64encode(
                 credentials.encode("ascii")).decode("ascii"))

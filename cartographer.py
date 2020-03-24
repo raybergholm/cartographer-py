@@ -42,6 +42,13 @@ class Cartographer:
 
         return (connector, nodes)
 
+    def set_authentication(self, type, settings={}):
+        if type == "basic":
+            self.connector.set_basic_authentication(settings.get("username"), settings.get("password"))
+        else:
+            raise Exception("Unsupported auth type argument in set_authentication '{0}'".format(type))
+
+
     def call(self, method, node_name, node_id=None, params={}, debug=False):
         if self.connector == None:
             raise UndefinedConnectorContextError("Connector has not been set")
