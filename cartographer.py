@@ -50,14 +50,14 @@ class Cartographer:
         else:
             if not node_name in self.nodes:
                 raise InvalidNodeError(
-                    "Invalid node: '%s' not found" % node_name)
+                    "Invalid node: '{0}' not found".format(node_name))
 
             node = self.nodes[node_name]
             path_url = node.query() if node_id == None else node.by_id(node_id)
 
             if not path_url:
                 raise UndefinedPathError(
-                    "Failed to get a valid path for node '%s' (check if the %s was configured correctly).\n List of configured nodes: %s" % (node_name, "nodeUrl" if node_id == None else "queryUrl", str(self.node_names)))
+                    "Failed to get a valid path for node '{0}' (check if the %s was configured correctly).\n List of configured nodes: {1}".format(node_name, "nodeUrl" if node_id == None else "queryUrl", str(self.node_names)))
 
             if "query" in params:
                 path_url = add_query_params(path_url, params["query"])

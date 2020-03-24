@@ -15,9 +15,9 @@ class ApiConnector:
         self.common_headers = {**headers} if headers != None else {}
 
         if username != None and password != None:
-            credentials = "%s:%s" % (username, password)
-            basic_auth_token = "Basic %s" % b64encode(
-                credentials.encode("ascii")).decode("ascii")
+            credentials = "{0}:{1}".format(username, password)
+            basic_auth_token = "Basic {0}".format(b64encode(
+                credentials.encode("ascii")).decode("ascii"))
             self.common_headers["Authorization"] = basic_auth_token
 
     def open_connection(self):
@@ -35,21 +35,22 @@ class ApiConnector:
 
     def request(self, method, path=None, params={}, debug=False):
         self.open_connection()
-        request_url = "%s://%s" % (self.protocol, self.host_url)
+        request_url = "{0}://{1}".format(self.protocol, self.host_url)
 
         if path != None:
-            request_url += "/%s" % path
+            request_url += "/{0}".format(path)
 
         headers = self.merge_headers(
             params["headers"]) if "headers" in params else self.common_headers
         body = json.dumps(params["body"]) if "body" in params else None
 
         if debug:
-            message = "About to send %s request to %s" % (method, request_url)
+            message = "About to send {0} request to {1}".format(
+                method, request_url)
             if headers:
-                message += "\n--- with headers: %s" % str(headers)
+                message += "\n--- with headers: {0}".format(headers)
             if body:
-                message += "\n--- with body: %s" % str(body)
+                message += "\n--- with body: {0}".format(body)
             print(message)
 
         self.connection.request(method, request_url,
@@ -61,7 +62,7 @@ class ApiConnector:
         self.close_connection()
 
         if debug:
-            print("Received %s response from %s: %s" & (
+            print("Received {0} response from {1}: {2}".format(
                 method, request_url, formatted_response))
         return formatted_response
 
@@ -76,7 +77,7 @@ class ApiConnector:
                 parsed = json.loads(body)
 
                 if "errorCode" in parsed:
-                    parsed = "%d %s" % (
+                    parsed = "{0} {1}".format(
                         parsed["errorCode"], parsed["errorMessage"])
             except ValueError:
                 parsed = body.decode("utf-8")
@@ -87,4 +88,4 @@ class ApiConnector:
         }
 
     def __str__(self):
-        return "*ApiConnector*\nhost URL: %s\ncommon headers: %s" % (self.host_url, str(self.common_headers))
+        return "*ApiConnector*\nhost URL: {0}\ncommon headers: {1}".format(self.host_url, str(self.common_headers))
