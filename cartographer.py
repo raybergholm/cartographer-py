@@ -7,10 +7,10 @@ from .submodules.api_node import ApiNode
 
 
 def add_query_params(base, params):
-    key_value_pairs = ["%s=%s" % (key, quote(value))
+    key_value_pairs = ["{0}={1}".format(key, quote(value))
                        for key, value in params.items()]
     query_string = "&".join(key_value_pairs)
-    return "%s?%s" % (base, query_string)
+    return "{0}?{1}".format(base, query_string)
 
 
 class Cartographer:
