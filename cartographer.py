@@ -70,8 +70,8 @@ class Cartographer:
                 raise UndefinedPathError(
                     "Failed to get a valid path for node '{0}' (check if the %s was configured correctly).\n List of configured nodes: {1}".format(node_name, "nodeUrl" if node_id == None else "queryUrl", str(self.node_names)))
 
-            if "query" in params:
-                path_url = add_query_params(path_url, params["query"])
+            path_url = add_query_params(path_url, params.get("query", None))
+
             return self.connector.request(method, path_url, params, debug)
 
     def options(self, node_name, node_id=None, params={}, debug=False):
