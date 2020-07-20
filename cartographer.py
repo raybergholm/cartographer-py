@@ -6,9 +6,12 @@ from .submodules.api_connector import ApiConnector
 from .submodules.api_node import ApiNode
 
 
-def add_query_params(base, params):
+def add_query_params(base, params=None):
+    if not params:
+        return base
+
     key_value_pairs = ["{0}={1}".format(key, quote(value))
-                       for key, value in params.items()]
+                    for key, value in params.items()]
     query_string = "&".join(key_value_pairs)
     return "{0}?{1}".format(base, query_string)
 
