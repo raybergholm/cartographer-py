@@ -26,21 +26,23 @@ class Cartographer:
 
         config = json.loads(raw_config)
 
-        if not "connection" in config or not "nodes" in config:
+        connection = config.get("connection", None)
+        nodes = config.get("nodes", None)
+
+        if not connection or not nodes:
             raise Exception("Config file is missing connection and node data")
 
-        connection = config["connection"]
         if not "hostUrl" in connection:
             raise Exception("Connection details has no hostUrl attribute")
         connector = ApiConnector(connection["protocol"], connection["hostUrl"], connection["username"] if "username" in connection else None,
                                  connection["password"] if "password" in connection else None, connection["headers"] if "headers" in connection else None)
 
-        nodes = {name: ApiNode(name, entry)
+        node_list = {name: ApiNode(name, entry)
                  for name, entry in config["nodes"].items()}
 
         # TODO: parse the rest of the stuff in the config
 
-        return (connector, nodes)
+        return (connector, node_list)
 
     def set_authentication(self, type, settings={}):
         if type == "basic":
