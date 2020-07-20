@@ -11,7 +11,7 @@ def add_query_params(base, params=None):
         return base
 
     key_value_pairs = ["{0}={1}".format(key, quote(value))
-                    for key, value in params.items()]
+                       for key, value in params.items()]
     query_string = "&".join(key_value_pairs)
     return "{0}?{1}".format(base, query_string)
 
@@ -37,10 +37,11 @@ class Cartographer:
 
         if not "hostUrl" in connection:
             raise Exception("Connection details has no hostUrl attribute")
-        connector = ApiConnector(connection.get("protocol", "https"), connection.get("hostUrl", ""), connection.get("username", ""), connection.get("password", "", connection.get("headers", None)))
+        connector = ApiConnector(connection.get("protocol", "https"), connection.get("hostUrl", ""), connection.get(
+            "username", ""), connection.get("password", "", connection.get("headers", None)))
 
         node_list = {name: ApiNode(name, entry)
-                 for name, entry in nodes.items()}
+                     for name, entry in nodes.items()}
 
         # TODO: parse the rest of the stuff in the config
 
@@ -48,10 +49,11 @@ class Cartographer:
 
     def set_authentication(self, type, settings={}):
         if type == "basic":
-            self.connector.set_basic_authentication(settings.get("username"), settings.get("password"))
+            self.connector.set_basic_authentication(
+                settings.get("username"), settings.get("password"))
         else:
-            raise Exception("Unsupported auth type argument in set_authentication '{0}'".format(type))
-
+            raise Exception(
+                "Unsupported auth type argument in set_authentication '{0}'".format(type))
 
     def call(self, method, node_name, node_id=None, params={}, debug=False):
         if self.connector == None:
