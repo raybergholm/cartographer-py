@@ -38,7 +38,7 @@ class Cartographer:
         if not "hostUrl" in connection:
             raise Exception("Connection details has no hostUrl attribute")
         connector = ApiConnector(connection.get("protocol", "https"), connection.get("hostUrl", ""), connection.get(
-            "username", ""), connection.get("password", "", connection.get("headers", None)))
+            "username", ""), connection.get("password", ""), connection.get("headers", None))
 
         node_list = {name: ApiNode(name, entry)
                      for name, entry in nodes.items()}
