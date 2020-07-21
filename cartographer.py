@@ -6,11 +6,14 @@ from .submodules.api_connector import ApiConnector
 from .submodules.api_node import ApiNode
 
 
-def add_query_params(base, params):
-    key_value_pairs = ["%s=%s" % (key, quote(value))
+def add_query_params(base, params=None):
+    if not params:
+        return base
+
+    key_value_pairs = ["{0}={1}".format(key, quote(value))
                        for key, value in params.items()]
     query_string = "&".join(key_value_pairs)
-    return "%s?%s" % (base, query_string)
+    return "{0}?{1}".format(base, query_string)
 
 
 class Cartographer:
@@ -26,28 +29,31 @@ class Cartographer:
 
         config = json.loads(raw_config)
 
-        if not "connection" in config or not "nodes" in config:
+        connection = config.get("connection", None)
+        nodes = config.get("nodes", None)
+
+        if not connection or not nodes:
             raise Exception("Config file is missing connection and node data")
 
-        connection = config["connection"]
         if not "hostUrl" in connection:
             raise Exception("Connection details has no hostUrl attribute")
-        connector = ApiConnector(connection["protocol"], connection["hostUrl"], connection["username"] if "username" in connection else None,
-                                 connection["password"] if "password" in connection else None, connection["headers"] if "headers" in connection else None)
+        connector = ApiConnector(connection.get("protocol", "https"), connection.get("hostUrl", ""), connection.get(
+            "username", ""), connection.get("password", ""), connection.get("headers", None))
 
-        nodes = {name: ApiNode(name, entry)
-                 for name, entry in config["nodes"].items()}
+        node_list = {name: ApiNode(name, entry)
+                     for name, entry in nodes.items()}
 
         # TODO: parse the rest of the stuff in the config
 
-        return (connector, nodes)
+        return (connector, node_list)
 
     def set_authentication(self, type, settings={}):
         if type == "basic":
-            self.connector.set_basic_authentication(settings.get("username"), settings.get("password"))
+            self.connector.set_basic_authentication(
+                settings.get("username"), settings.get("password"))
         else:
-            raise Exception("Unsupported auth type argument in set_authentication '{0}'".format(type))
-
+            raise Exception(
+                "Unsupported auth type argument in set_authentication '{0}'".format(type))
 
     def call(self, method, node_name, node_id=None, params={}, debug=False):
         if self.connector == None:
@@ -66,8 +72,8 @@ class Cartographer:
                 raise UndefinedPathError(
                     "Failed to get a valid path for node '{0}' (check if the %s was configured correctly).\n List of configured nodes: {1}".format(node_name, "nodeUrl" if node_id == None else "queryUrl", str(self.node_names)))
 
-            if "query" in params:
-                path_url = add_query_params(path_url, params["query"])
+            path_url = add_query_params(path_url, params.get("query", None))
+
             return self.connector.request(method, path_url, params, debug)
 
     def options(self, node_name, node_id=None, params={}, debug=False):
