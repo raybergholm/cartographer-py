@@ -103,8 +103,17 @@ class Cartographer:
             Cartographer.HTTP_PATCH: requests.patch,
             Cartographer.HTTP_DELETE: requests.delete
         }
-
         action = actions[method]
+
+        if debug:
+            message = "About to send {0} request to {1}".format(
+                method, request_url)
+            if headers:
+                message += "\n--- with headers: {0}".format(headers)
+            if body:
+                message += "\n--- with body: {0}".format(body)
+            print(message)
+
         response = action(
             request_url, auth=self.auth, headers=headers, params=query_params, json=body)
 
