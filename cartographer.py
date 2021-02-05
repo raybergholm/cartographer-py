@@ -69,7 +69,7 @@ class Cartographer:
     def has_node(self, node_name):
         return node_name in self.nodes
 
-    def call(self, method, node_name, node_id=None, debug=False, **kwargs):
+    def call(self, method, node_name, node_id=None, **kwargs):
         if self.nodes == None:
             raise UndefinedNodeMapError("Nodemap has not been set")
         elif not self.has_node(node_name):
@@ -105,7 +105,7 @@ class Cartographer:
         }
         action = actions[method]
 
-        if debug:
+        if "debug_mode" in kwargs and (kwargs.get("debug_mode", False) == True):
             message = "About to send {0} request to {1}".format(
                 method, request_url)
             if headers:
@@ -120,25 +120,25 @@ class Cartographer:
         return response
 
     def options(self, node_name, node_id=None, debug=False, **kwargs):
-        return self.call(Cartographer.HTTP_OPTIONS, node_name, node_id, debug, **kwargs)
+        return self.call(Cartographer.HTTP_OPTIONS, node_name, node_id, **kwargs)
 
     def head(self, node_name, node_id=None, debug=False, **kwargs):
-        return self.call(Cartographer.HTTP_HEAD, node_name, node_id, debug, **kwargs)
+        return self.call(Cartographer.HTTP_HEAD, node_name, node_id, **kwargs)
 
     def get(self, node_name, node_id=None, debug=False, **kwargs):
-        return self.call(Cartographer.HTTP_GET, node_name, node_id, debug, **kwargs)
+        return self.call(Cartographer.HTTP_GET, node_name, node_id, **kwargs)
 
     def post(self, node_name, node_id=None, debug=False, **kwargs):
-        return self.call(Cartographer.HTTP_POST, node_name, node_id, debug, **kwargs)
+        return self.call(Cartographer.HTTP_POST, node_name, node_id, **kwargs)
 
     def put(self, node_name, node_id=None, debug=False, **kwargs):
-        return self.call(Cartographer.HTTP_PUT, node_name, node_id, debug, **kwargs)
+        return self.call(Cartographer.HTTP_PUT, node_name, node_id, **kwargs)
 
     def patch(self, node_name, node_id=None, debug=False, **kwargs):
-        return self.call(Cartographer.HTTP_PATCH, node_name, node_id, debug, **kwargs)
+        return self.call(Cartographer.HTTP_PATCH, node_name, node_id, **kwargs)
 
     def delete(self, node_name, node_id=None, debug=False, **kwargs):
-        return self.call(Cartographer.HTTP_DELETE, node_name, node_id, debug, **kwargs)
+        return self.call(Cartographer.HTTP_DELETE, node_name, node_id, **kwargs)
 
     def __str__(self):
         return "Cartographer instance details:\n" + str(self.connector) + "\nNodes: " + str([str(node) for node in self.nodes])
