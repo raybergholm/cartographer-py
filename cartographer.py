@@ -169,7 +169,8 @@ class ApiNode:
         print("resolve_url argv len {0}".format(len(argv)))
         if len(argv):
             resolved_url = self.root_url
-        elif len(argv) == 1 and ":id" in self.variable_url: # v0.1 method shortcut for :id variables. Deprecate?
+        # v0.1 method shortcut for :id variables. Deprecate?
+        elif len(argv) == 1 and ":id" in self.variable_url:
             resolved_url = self.by_id(argv[0])
         else:
             for i, entry in enumerate(argv):
