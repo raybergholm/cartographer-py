@@ -119,25 +119,25 @@ class Cartographer:
 
         return response
 
-    def options(self, node_name, node_id=None, debug=False, **kwargs):
+    def options(self, node_name, node_id=None, **kwargs):
         return self.call(Cartographer.HTTP_OPTIONS, node_name, node_id, **kwargs)
 
-    def head(self, node_name, node_id=None, debug=False, **kwargs):
+    def head(self, node_name, node_id=None, **kwargs):
         return self.call(Cartographer.HTTP_HEAD, node_name, node_id, **kwargs)
 
-    def get(self, node_name, node_id=None, debug=False, **kwargs):
+    def get(self, node_name, node_id=None, **kwargs):
         return self.call(Cartographer.HTTP_GET, node_name, node_id, **kwargs)
 
-    def post(self, node_name, node_id=None, debug=False, **kwargs):
+    def post(self, node_name, node_id=None, **kwargs):
         return self.call(Cartographer.HTTP_POST, node_name, node_id, **kwargs)
 
-    def put(self, node_name, node_id=None, debug=False, **kwargs):
+    def put(self, node_name, node_id=None, **kwargs):
         return self.call(Cartographer.HTTP_PUT, node_name, node_id, **kwargs)
 
-    def patch(self, node_name, node_id=None, debug=False, **kwargs):
+    def patch(self, node_name, node_id=None, **kwargs):
         return self.call(Cartographer.HTTP_PATCH, node_name, node_id, **kwargs)
 
-    def delete(self, node_name, node_id=None, debug=False, **kwargs):
+    def delete(self, node_name, node_id=None, **kwargs):
         return self.call(Cartographer.HTTP_DELETE, node_name, node_id, **kwargs)
 
     def __str__(self):
