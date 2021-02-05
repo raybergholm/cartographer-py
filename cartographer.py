@@ -69,7 +69,7 @@ class Cartographer:
     def has_node(self, node_name):
         return node_name in self.nodes
 
-    def call(self, method, node_name, node_id=None, **kwargs):
+    def call(self, method, node_name, *argv, **kwargs):
         if self.nodes == None:
             raise UndefinedNodeMapError("Nodemap has not been set")
         elif not self.has_node(node_name):
@@ -77,7 +77,8 @@ class Cartographer:
                 "Node: '{0}' not found".format(node_name))
 
         node = self.nodes[node_name]
-        path_url = node.root_url if node_id == None else node.by_id(node_id)
+
+        path_url = node.resolve_url(argv)
 
         request_url = self.host_url
 
@@ -119,26 +120,26 @@ class Cartographer:
 
         return response
 
-    def options(self, node_name, node_id=None, **kwargs):
-        return self.call(Cartographer.HTTP_OPTIONS, node_name, node_id, **kwargs)
+    def options(self, node_name, *argv, **kwargs):
+        return self.call(Cartographer.HTTP_OPTIONS, node_name, *argv, **kwargs)
 
-    def head(self, node_name, node_id=None, **kwargs):
-        return self.call(Cartographer.HTTP_HEAD, node_name, node_id, **kwargs)
+    def head(self, node_name, *argv, **kwargs):
+        return self.call(Cartographer.HTTP_HEAD, node_name, *argv, **kwargs)
 
-    def get(self, node_name, node_id=None, **kwargs):
-        return self.call(Cartographer.HTTP_GET, node_name, node_id, **kwargs)
+    def get(self, node_name, *argv, **kwargs):
+        return self.call(Cartographer.HTTP_GET, node_name, *argv, **kwargs)
 
-    def post(self, node_name, node_id=None, **kwargs):
-        return self.call(Cartographer.HTTP_POST, node_name, node_id, **kwargs)
+    def post(self, node_name, *argv, **kwargs):
+        return self.call(Cartographer.HTTP_POST, node_name, *argv, **kwargs)
 
-    def put(self, node_name, node_id=None, **kwargs):
-        return self.call(Cartographer.HTTP_PUT, node_name, node_id, **kwargs)
+    def put(self, node_name, *argv, **kwargs):
+        return self.call(Cartographer.HTTP_PUT, node_name, *argv, **kwargs)
 
-    def patch(self, node_name, node_id=None, **kwargs):
-        return self.call(Cartographer.HTTP_PATCH, node_name, node_id, **kwargs)
+    def patch(self, node_name, *argv, **kwargs):
+        return self.call(Cartographer.HTTP_PATCH, node_name, *argv, **kwargs)
 
-    def delete(self, node_name, node_id=None, **kwargs):
-        return self.call(Cartographer.HTTP_DELETE, node_name, node_id, **kwargs)
+    def delete(self, node_name, *argv, **kwargs):
+        return self.call(Cartographer.HTTP_DELETE, node_name, *argv, **kwargs)
 
     def __str__(self):
         return "Cartographer instance details:\n" + str(self.connector) + "\nNodes: " + str([str(node) for node in self.nodes])
@@ -162,10 +163,18 @@ class ApiNode:
         return self.variable_url.replace(":id", id)
 
     # The end user is responsible for handling the variable substitutions correctly!
-    def resolve_url(self, **kwargs):
-        resolved_url = self.variable_url
-        for key, value in kwargs.items:
-            resolved_url = resolved_url.replace(":{0}".format(key), value)
+    def resolve_url(self, *argv):
+        resolved_url = None
+
+        print("resolve_url argv len {0}".format(len(argv)))
+        if len(argv):
+            resolved_url = self.root_url
+        elif len(argv) == 1 and ":id" in self.variable_url: # v0.1 method shortcut for :id variables. Deprecate?
+            resolved_url = self.by_id(argv[0])
+        else:
+            for i, entry in enumerate(argv):
+                resolved_url = resolved_url.replace("{{0}}".format(i), entry)
+
         return resolved_url
 
     def __str__(self):
