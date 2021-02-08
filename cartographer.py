@@ -26,7 +26,7 @@ class Cartographer:
 
         self.common_headers = {}
         if headers:
-            self.common_headers = {**headers}
+            self.add_common_headers(headers)
 
     def _parse_configs(self, raw_config):
         config = json.loads(raw_config)
@@ -69,6 +69,9 @@ class Cartographer:
             self.auth = (kwargs.get("username", ""),
                          kwargs.get("password", ""))
         # TODO: add other types later
+    
+    def add_common_headers(self, headers):
+        self.common_headers = {**self.common_headers, **headers}
 
     def has_node(self, node_name):
         return node_name in self.nodes
