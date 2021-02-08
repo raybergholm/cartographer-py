@@ -2,7 +2,13 @@
 
 Cartographer is a library for streamlining the connection and calling of an API.
 
-Given a config file containing the connection details of the API and the list of nodes and their details, this library builds a map of the API which is used to construct API calls as required. Rather having to manually make `HTTPSConnection(host_url).request("GET", "/why/did/i/create/such/a/long/chain/to/cake-selection")` calls, just use Cartographer to shorten it to `cartographer.get("cake-selection")` and have Cartographer handle the boring the middle layers.
+Given a config file containing the connection details of the API and the list of nodes and their details, this library builds a map of the API which is used to construct API calls as required. Rather having to manually make calls like `HTTPSConnection(host_url).request("GET", "/why/did/i/create/such/a/long/chain/to/cake-selection")` calls, just use Cartographer to shorten it to `cartographer.get("cake-selection")` and have Cartographer handle the boring the middle layers.
+
+## Dependencies
+
+* requests
+
+Make sure you have pip then run `pip install requests`
 
 ## How to instantiate
 
@@ -13,16 +19,63 @@ Supply the config file contents in the constructor. This should be read from the
         import cartographer
         with open(filepath, "r") as file_stream:
             config_settings = file_stream.read()
-
-        return cartographer.Cartographer(config_settings)
+            return cartographer.Cartographer(config_settings)
 ```
+
+## Config file setup
+
+The config file has at least two base elements.
+
+### Connection
+
+The connection attribute defines the common parts which will be used for all calls done with the instance. The full example structure:
+
+```json
+"connection": {
+    "protocol": "https",
+    "hostUrl": "www.example-api-hosturl.com",
+    "auth": {
+        "type": "basic",
+        "username": "YOUR_USERNAME_HERE",
+        "password": "YOUR_PASSWORD_HERE"
+    },
+    "headers": {
+        "x-api-key": "SOME_AWS_API_KEY",
+        "somecommonheader": "THIS_WILL_BE_ADDED_TO_ALL_CALLS",
+        "authentication": "YOU_CAN_ALSO_INCLUDE_THE_AUTH_HEADER_DIRECTLY_INSTEAD_OF_SUPPLYING_A_USERNAME_AND_PASSWORD"
+    }
+}
+```
+
+In the super minimal case, only the hostUrl is actually mandatory, if no security headers or auth tokens are required then it's fine to specify only the hostUrl.
+
+Note that v0.1 used to directly read `connection.username` and `connection.password`, this is still supported for backcompatibility.
+
+### Nodes
+
+The other main item in the config file is a list of nodes. An example:
+
+```json
+"nodes": {
+    "users": {
+        "rootUrl": "users",
+        "variable_url": "users/{0}",
+    },
+    "userItems": {
+        "rootUrl": "users/{0}/items",
+        "variable_url": "users/{0}/items/{1}",
+    }
+}
+```
+
+In the above example, `cartographer.get("users")` is equivalent to calling /users while `cartographer.get("users", "1234")` is equivalent to calling hostUrl/users/1234. Multiple substitutions are also supported, so `cartographer.get("usersItems", "1234", "abcd")` -> hostUrl/users/1234/items/abcd
 
 ## Troubleshooting
 
-Each call has a boolean argument called `debug` which is set to false by default. Set this to true to have request and response details echoed to output.
+Each call supports verbose debug info, just pass `debug_mode=True` to have request and response details echoed to output.
 
 ## TODO: Features on the backlog
 
-- Auto-detect input config settings: auto-detect if the input is already JSON, otherwise try to parse as JSON
-- Field lists: automatically filter payloads to only use these fields
-- Allowed methods: limit which HTTP methods are allowed per node: trying to make an invalid call throws an error. This can be used to set client-side restrictions if some nodes do not support certain methods.
+* Auto-detect input config settings: auto-detect if the input is already JSON, otherwise try to parse as JSON
+* Field lists: automatically filter payloads to only use these fields
+* Allowed methods: limit which HTTP methods are allowed per node: trying to make an invalid call throws an error. This can be used to set client-side restrictions if some nodes do not support certain methods.
