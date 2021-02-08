@@ -22,13 +22,7 @@ class Cartographer:
 
         self.auth = None
         if auth:
-            # since basic auth is ubiquitous, if the type is missing just assume it by default 
-            auth_type = auth.get("type", "basic").lower()
-
-            if auth_type == "basic":
-                self.auth = (auth.get("username", ""),
-                             auth.get("password", ""))
-            # TODO: add other types later
+            self.set_authentication(**auth)
 
         self.common_headers = {}
         if headers:
@@ -66,6 +60,15 @@ class Cartographer:
 
         headers = connection.get("headers", None)
         return (host_url, node_list, auth, headers)
+
+    def set_authentication(self, **kwargs):
+        # since basic auth is ubiquitous, if the type is missing just assume it by default 
+        auth_type = kwargs.get("type", "basic").lower()
+
+        if auth_type == "basic":
+            self.auth = (kwargs.get("username", ""),
+                         kwargs.get("password", ""))
+        # TODO: add other types later
 
     def has_node(self, node_name):
         return node_name in self.nodes
