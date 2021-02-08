@@ -22,16 +22,11 @@ class Cartographer:
 
         self.auth = None
         if auth:
-            auth_type = auth.get("type", "").lower()
-
-            if auth_type == "basic":
-                self.auth = (auth.get("username", ""),
-                             auth.get("password", ""))
-            # TODO: add other types later
+            self.set_authentication(**auth)
 
         self.common_headers = {}
         if headers:
-            self.common_headers = {**headers}
+            self.add_common_headers(headers)
 
     def _parse_configs(self, raw_config):
         config = json.loads(raw_config)
@@ -65,6 +60,18 @@ class Cartographer:
 
         headers = connection.get("headers", None)
         return (host_url, node_list, auth, headers)
+
+    def set_authentication(self, **kwargs):
+        # since basic auth is ubiquitous, if the type is missing just assume it by default 
+        auth_type = kwargs.get("type", "basic").lower()
+
+        if auth_type == "basic":
+            self.auth = (kwargs.get("username", ""),
+                         kwargs.get("password", ""))
+        # TODO: add other types later
+    
+    def add_common_headers(self, headers):
+        self.common_headers = {**self.common_headers, **headers}
 
     def has_node(self, node_name):
         return node_name in self.nodes
