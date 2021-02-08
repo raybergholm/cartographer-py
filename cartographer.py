@@ -78,7 +78,7 @@ class Cartographer:
 
         node = self.nodes[node_name]
 
-        path_url = node.resolve_url(argv)
+        path_url = node.resolve_url(*argv)
 
         request_url = self.host_url
 
@@ -166,7 +166,6 @@ class ApiNode:
     def resolve_url(self, *argv):
         resolved_url = None
 
-        print("resolve_url argv len {0}".format(len(argv)))
         if len(argv) == 0:
             resolved_url = self.root_url
         # v0.1 method shortcut for :id variables. Deprecate?
