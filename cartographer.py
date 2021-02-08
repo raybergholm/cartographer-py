@@ -22,7 +22,8 @@ class Cartographer:
 
         self.auth = None
         if auth:
-            auth_type = auth.get("type", "").lower()
+            # since basic auth is ubiquitous, if the type is missing just assume it by default 
+            auth_type = auth.get("type", "basic").lower()
 
             if auth_type == "basic":
                 self.auth = (auth.get("username", ""),
