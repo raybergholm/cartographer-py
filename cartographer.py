@@ -167,7 +167,7 @@ class ApiNode:
         resolved_url = None
 
         print("resolve_url argv len {0}".format(len(argv)))
-        if len(argv):
+        if len(argv) == 0:
             resolved_url = self.root_url
         # v0.1 method shortcut for :id variables. Deprecate?
         elif len(argv) == 1 and ":id" in self.variable_url:
