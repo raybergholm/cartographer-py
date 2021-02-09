@@ -4,6 +4,10 @@ Cartographer is a library for streamlining the connection and calling of an API.
 
 Given a config file containing the connection details of the API and the list of nodes and their details, this library builds a map of the API which is used to construct API calls as required. Rather having to manually make calls like `HTTPSConnection(host_url).request("GET", "/why/did/i/create/such/a/long/chain/to/cake-selection")` calls, just use Cartographer to shorten it to `cartographer.get("cake-selection")` and have Cartographer handle the boring the middle layers.
 
+## Changelog
+
+[Click here](./CHANGELOG.md)
+
 ## Dependencies
 
 * requests
