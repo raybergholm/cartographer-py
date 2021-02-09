@@ -2,9 +2,10 @@
 
 ## v0.2.0
 
-First major rewrite. The old v0.1 used the standard urllib but upkeep is easier using Requests. 
+First major rewrite. The old v0.1 used the standard urllib but upkeep is easier using Requests.
 
 * Now requires the [Requests library](https://requests.readthedocs.io/en/master/)
+* If auth is specified but not the type, the default assumption is basic auth
 * Added option to set common headers after initial instantiation (adding headers to individual requests remain unchanged)
 * Verbose debug mode in individual calls is now triggered by `debug_mode=True`
 
