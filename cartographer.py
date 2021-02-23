@@ -98,7 +98,7 @@ class Cartographer:
         else:
             headers = self.common_headers
 
-        body = json.dumps(kwargs["body"]) if "body" in kwargs else None
+        body = kwargs["body"] if "body" in kwargs else None
 
         query_params = kwargs["query"] if "query" in kwargs else None
 
