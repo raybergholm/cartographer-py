@@ -113,11 +113,11 @@ class Cartographer:
 
         query_params = None
         if "query" in kwargs:
-            body = kwargs["query"]
+            query_params = kwargs["query"]
         elif "params" in kwargs:
-            body = kwargs["params"].get("query", None)
+            query_params = kwargs["params"].get("query", None)
         else:
-            body = None
+            query_params = None
 
         actions = {
             Cartographer.HTTP_OPTIONS: requests.options,
