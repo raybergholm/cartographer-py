@@ -77,6 +77,9 @@ class Cartographer:
         return node_name in self.nodes
 
     def call(self, method, node_name, *args, **kwargs):
+        if "params" in kwargs:
+            print("WARNING - params argument is deprecated. Use separate keyword arguments for optional parameters")
+
         if self.nodes == None:
             raise UndefinedNodeMapError("Nodemap has not been set")
         elif not self.has_node(node_name):
@@ -95,12 +98,26 @@ class Cartographer:
         headers = None
         if "headers" in kwargs:
             headers = {**self.common_headers, **kwargs["headers"]}
+        elif "params" in kwargs:
+            headers = {**self.common_headers, **kwargs["params"].get("headers", {})}
         else:
             headers = self.common_headers
 
-        body = kwargs["body"] if "body" in kwargs else None
+        body = None
+        if "body" in kwargs:
+            body = kwargs["body"]
+        elif "params" in kwargs:
+            body = kwargs["params"].get("body", None)
+        else:
+            body = None
 
-        query_params = kwargs["query"] if "query" in kwargs else None
+        query_params = None
+        if "query" in kwargs:
+            body = kwargs["query"]
+        elif "params" in kwargs:
+            body = kwargs["params"].get("query", None)
+        else:
+            body = None
 
         actions = {
             Cartographer.HTTP_OPTIONS: requests.options,
