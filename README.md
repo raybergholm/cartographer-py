@@ -2,7 +2,7 @@
 
 Cartographer is a library for streamlining the connection and calling of an API.
 
-Given a config file containing the connection details of the API and the list of nodes and their details, this library builds a map of the API which is used to construct API calls as required. Rather having to manually make calls like `HTTPSConnection(host_url).request("GET", "/why/did/i/create/such/a/long/chain/to/cake-selection")` calls, just use Cartographer to shorten it to `cartographer.get("cake-selection")` and have Cartographer handle the boring the middle layers.
+Given a config file containing the connection details of the API and the list of nodes and their details, this library builds a map of the API which is used to construct API calls as required. Rather having to manually make calls like `HTTPSConnection(host_url).request("GET", "/why/did/i/create/such/a/long/chain/to/cake-selection")` calls, just use Cartographer to shorten it to `cartographer.get("cake-selection")` and have Cartographer handle the middle layers for you.
 
 ## Changelog
 
@@ -25,6 +25,42 @@ Supply the config file contents in the constructor. This should be read from the
             config_settings = file_stream.read()
             return cartographer.Cartographer(config_settings)
 ```
+
+## How to make a request
+
+The cartographer instance has defined methods `get`, `post`, `head`, `post`, `put`, `patch`, `delete` (i.e. the same as HTTP method names) which can be used to make requests. These methods are syntactic sugar that route to the `call` method.
+
+Examples:
+
+```python
+    # get /foo
+    instance.get("foo")
+
+    # get foo endpoint with id (e.g. /foo/bar)
+    instance.get("foo", "bar")
+
+    # get foo endpoint with an additional header
+    instance.get("foo", headers={
+        "extraheader": "bar"
+    })
+
+    # get foo with query params
+    instance.get("foo", query={
+        "page": 0,
+        "limit": 100
+    })
+
+    # post to foo with body
+    instance.post("foo", body={
+        "bar": "baz"
+    })
+```
+
+The following optional parameters are supported:
+
+* headers - additional headers. This will be merged with common headers defined in the config file (additional headers take priority if the keys clash)
+* body - body payload
+* query - query parameters
 
 ## Config file setup
 
