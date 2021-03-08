@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.2.1
+
+* Added backcompatibility for the old params argument, attempt to populate query, headers and body from params
+* Added a deprecation warning if the old params argument is used
+
 ## v0.2.0
 
 First major rewrite. The old v0.1 used the standard urllib but upkeep is easier using Requests.
