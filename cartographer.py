@@ -135,6 +135,8 @@ class Cartographer:
                 method, request_url)
             if headers:
                 message += "\n--- with headers: {0}".format(headers)
+            if query_params:
+                message += "\n--- with query params: {0}".format(query_params)
             if body:
                 message += "\n--- with body: {0}".format(body)
             print(message)
