@@ -11,13 +11,21 @@ First major rewrite. The old v0.1 used the standard urllib but upkeep is easier 
 
 ### Breaking changes v0.1 -> v0.2
 
-The response object returned from a request is now from the Requests library. This means that scripts expecting v0.1 type responses may break, since it's no longer a dictionary-type response. The following table shows some examples
+The response object returned from a request is now from the Requests library. This means that scripts expecting v0.1 type responses may break, since it's no longer a dictionary-type response. The following table shows some examples:
 
 | old | new |
 | --- | --- |
 | `response["status"]` | `response.status_code` |
 | `response["body"]` | `response.text` |
-| `json.loads(response["body"])` | `response.json` |
+| `json.loads(response["body"])` | `response.json()` |
+
+Additionally, the `call()` in v0.1 expected additional parameters as a dictionary in `params`, now they have been split to their own keyword arguments. Examples are as follows:
+
+| old | new |
+| --- | --- |
+| `params.query` | `query` |
+| `params.headers` | `headers` |
+| `params.body` | `body` |
 
 The following features are supported for backcompatibility with v0.1:
 
