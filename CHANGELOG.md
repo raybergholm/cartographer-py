@@ -1,11 +1,11 @@
 # Changelog
 
-## v0.2.1
+## v1.0.1
 
 * Added backcompatibility for the old params argument, attempt to populate query, headers and body from params
 * Added a deprecation warning if the old params argument is used
 
-## v0.2.0
+## v1.0.0
 
 First major rewrite. The old v0.1 used the standard urllib but upkeep is easier using Requests.
 
@@ -14,7 +14,7 @@ First major rewrite. The old v0.1 used the standard urllib but upkeep is easier 
 * Added option to set common headers after initial instantiation (adding headers to individual requests remain unchanged)
 * Verbose debug mode in individual calls is now triggered by `debug_mode=True`
 
-### Breaking changes v0.1 -> v0.2
+### Breaking changes v0.1.x -> v1.0.0
 
 The response object returned from a request is now from the Requests library. This means that scripts expecting v0.1 type responses may break, since it's no longer a dictionary-type response. The following table shows some examples:
 
